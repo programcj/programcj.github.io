@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"localhost","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="我的原文https:&#x2F;&#x2F;blog.csdn.net&#x2F;cjqqschoolqq&#x2F;article&#x2F;details&#x2F;88675672?spm&#x3D;1001.2014.3001.5502​ 1,源码下载Github: https:&#x2F;&#x2F;github.com&#x2F;rgaufman&#x2F;live555 2,编译1user@ubuntu$ .&#x2F;genMakefiles linux-gdb  gdb 为添加 -g 功能  通过">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Live555开源库学习1">
+<meta property="og:url" content="http://localhost:4000/docs/2022/04/01/live555/Live555%E5%BC%80%E6%BA%90%E5%BA%93%E5%AD%A6%E4%B9%A01/index.html">
+<meta property="og:site_name" content="编程升级笔记">
+<meta property="og:description" content="我的原文https:&#x2F;&#x2F;blog.csdn.net&#x2F;cjqqschoolqq&#x2F;article&#x2F;details&#x2F;88675672?spm&#x3D;1001.2014.3001.5502​ 1,源码下载Github: https:&#x2F;&#x2F;github.com&#x2F;rgaufman&#x2F;live555 2,编译1user@ubuntu$ .&#x2F;genMakefiles linux-gdb  gdb 为添加 -g 功能  通过">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190319223136978.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2NqcXFzY2hvb2xxcQ==,size_16,color_FFFFFF,t_70">
+<meta property="article:published_time" content="2022-03-31T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-04-09T08:40:25.904Z">
+<meta property="article:author" content="programcj">
+<meta property="article:tag" content="live555">
+<meta property="article:tag" content="c++">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20190319223136978.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2NqcXFzY2hvb2xxcQ==,size_16,color_FFFFFF,t_70">
+
+<link rel="canonical" href="http://localhost:4000/docs/2022/04/01/live555/Live555%E5%BC%80%E6%BA%90%E5%BA%93%E5%AD%A6%E4%B9%A01/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Live555开源库学习1 | 编程升级笔记</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">编程升级笔记</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">程序人生的旅行过程</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-编程语言">
+
+    <a href="/programlanguage/" rel="section"><i class="fa fa-th fa-fw"></i>编程语言</a>
+
+  </li>
+        <li class="menu-item menu-item-哲学">
+
+    <a href="/soft/" rel="section"><i class="fa fa-th fa-fw"></i>哲学</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://localhost:4000/docs/2022/04/01/live555/Live555%E5%BC%80%E6%BA%90%E5%BA%93%E5%AD%A6%E4%B9%A01/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="programcj">
+      <meta itemprop="description" content="我的日志">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="编程升级笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Live555开源库学习1
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-04-01 00:00:00" itemprop="dateCreated datePublished" datetime="2022-04-01T00:00:00+08:00">2022-04-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-04-09 16:40:25" itemprop="dateModified" datetime="2022-04-09T16:40:25+08:00">2022-04-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/live555/" itemprop="url" rel="index"><span itemprop="name">live555</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="我的原文"><a href="#我的原文" class="headerlink" title="我的原文"></a>我的原文</h1><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/cjqqschoolqq/article/details/88675672?spm=1001.2014.3001.5502">https://blog.csdn.net/cjqqschoolqq/article/details/88675672?spm=1001.2014.3001.5502</a><br>​</p>
+<h1 id="1-源码下载"><a href="#1-源码下载" class="headerlink" title="1,源码下载"></a>1,源码下载</h1><p>Github: <a target="_blank" rel="noopener" href="https://github.com/rgaufman/live555">https://github.com/rgaufman/live555</a></p>
+<h1 id="2-编译"><a href="#2-编译" class="headerlink" title="2,编译"></a>2,编译</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">user@ubuntu$ </span><span class="language-bash">./genMakefiles linux-gdb</span></span><br></pre></td></tr></table></figure>
+
+<p>gdb 为添加 -g 功能  通过config.xxxxx 文件可以判断 在config.linux-gdb中添加-DDEBUG</p>
+<h1 id="3-结构图"><a href="#3-结构图" class="headerlink" title="3 结构图"></a>3 结构图</h1><p><img src="https://img-blog.csdnimg.cn/20190319223136978.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2NqcXFzY2hvb2xxcQ==,size_16,color_FFFFFF,t_70" alt="Live555"> </p>
+<p><code>RTSPServer.cpp</code> 为rtsp服务端结构，里面有rtsp协议解析，以及socket/bind/listen/accept/read/write的操作</p>
+<p>通过<code>testProgs/testOnDemandRTSPServer.cpp</code>,可以查看基本的<code>ServerMediaSession</code>的格种操作  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	<span class="type">char</span> <span class="type">const</span>* streamName = <span class="string">&quot;h264ESVideoTest&quot;</span>;</span><br><span class="line">	<span class="type">char</span> <span class="type">const</span>* inputFileName = <span class="string">&quot;test.264&quot;</span>;</span><br><span class="line">	ServerMediaSession* sms = ServerMediaSession::<span class="built_in">createNew</span>(*env,</span><br><span class="line">			streamName, streamName, descriptionString);</span><br><span class="line">	sms-&gt;<span class="built_in">addSubsession</span>(</span><br><span class="line">			H264VideoFileServerMediaSubsession::<span class="built_in">createNew</span>(*env,</span><br><span class="line">					inputFileName, reuseFirstSource));</span><br><span class="line">	rtspServer-&gt;<span class="built_in">addServerMediaSession</span>(sms);</span><br><span class="line"></span><br><span class="line">	<span class="built_in">announceStream</span>(rtspServer, sms, streamName, inputFileName);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在<code>mediaServer/DynamicRTSPServer.cpp</code>,继承<code>RTSPServerSupportingHTTPStreaming:public RTSPServer &#123;&#125;</code></p>
+<p>主要实现<code>virtual ServerMediaSession *lookupServerMediaSession(....)</code> 当须要播放时，<code>RTSPServer</code>就会调用，返回一个<code>ServerMediaSession</code>对象.</p>
+<p>当同时有视频和音频时，须要同时向<code>ServerMediaSession</code>中添加<code>Subsession</code></p>
+<p>这里实现一个循环播放H264文件功能</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">H264VideoFileServerMediaSubsessionLoop</span>: <span class="keyword">public</span> H264VideoFileServerMediaSubsession &#123;</span><br><span class="line"></span><br><span class="line"><span class="keyword">protected</span>: <span class="comment">// redefined virtual functions</span></span><br><span class="line">        <span class="comment">//主要实现这个函数</span></span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> FramedSource* <span class="title">createNewStreamSource</span><span class="params">(<span class="type">unsigned</span> clientSessionId,</span></span></span><br><span class="line"><span class="params"><span class="function">						      <span class="type">unsigned</span>&amp; estBitrate)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//函数实现</span></span><br><span class="line"><span class="function">FramedSource* <span class="title">H264VideoFileServerMediaSubsessionLoop::createNewStreamSource</span><span class="params">(<span class="type">unsigned</span> <span class="comment">/*clientSessionId*/</span>, <span class="type">unsigned</span>&amp; estBitrate)</span> </span>&#123;</span><br><span class="line">  estBitrate = <span class="number">500</span>; <span class="comment">// kbps, estimate</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// Create the video source:</span></span><br><span class="line">  ByteStreamFileSourceLoop* fileSource = ByteStreamFileSourceLoop::<span class="built_in">createNew</span>(<span class="built_in">envir</span>(), fFileName);</span><br><span class="line">  <span class="keyword">if</span> (fileSource == <span class="literal">NULL</span>) <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">  fFileSize = fileSource-&gt;<span class="built_in">fileSize</span>();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Create a framer for the Video Elementary Stream:</span></span><br><span class="line">  <span class="keyword">return</span> H264VideoStreamFramer::<span class="built_in">createNew</span>(<span class="built_in">envir</span>(), fileSource);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>接下来实现<code>ByteStreamFileSourceLoop</code></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//复制ByteStreamFileSource.cpp 重命名 ByteStreamFileSourceLoop</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ByteStreamFileSourceLoop</span>: <span class="keyword">public</span> FramedFileSource &#123;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">  <span class="comment">//主要实现此方法</span></span><br><span class="line">  <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">doGetNextFrame</span><span class="params">()</span></span>; </span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">ByteStreamFileSourceLoop::doGetNextFrame</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">        <span class="comment">//将这里进行修改</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">feof</span>(fFid) || <span class="built_in">ferror</span>(fFid) || (fLimitNumBytesToStream &amp;&amp; fNumBytesToStream == <span class="number">0</span>)) &#123;</span><br><span class="line">		<span class="built_in">fseek</span>(fFid, <span class="number">0</span>, SEEK_SET);</span><br><span class="line">	&#125;</span><br><span class="line">        ..........</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">handleClosure</span>(); <span class="comment">//为停止</span></span><br><span class="line"><span class="comment">//为执行FramedSource::afterGetting(this)函数，貌似为线程调度执行</span></span><br><span class="line"><span class="comment">//这一句千万不要丢</span></span><br><span class="line"><span class="built_in">nextTask</span>() = <span class="built_in">envir</span>().<span class="built_in">taskScheduler</span>().<span class="built_in">scheduleDelayedTask</span>(<span class="number">0</span>,</span><br><span class="line">				(TaskFunc*)FramedSource::afterGetting, <span class="keyword">this</span>);</span><br><span class="line">FramedSource::<span class="built_in">afterGetting</span>(<span class="keyword">this</span>); <span class="comment">//和上面功能一样，只是这是同步</span></span><br><span class="line">好了，基本的循环播放H264文件就成功了</span><br></pre></td></tr></table></figure>
+
+<p>接下来使用ffmpeg读取H264文件</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//程序启动第一次</span></span><br><span class="line"><span class="built_in">av_register_all</span>();</span><br><span class="line"></span><br><span class="line"><span class="comment">//打开文件</span></span><br><span class="line">AVFormatContext *fmt_ctx = <span class="literal">NULL</span>;</span><br><span class="line"><span class="type">int</span> video_stream;</span><br><span class="line"><span class="type">int</span> audio_stream;</span><br><span class="line">AVBitStreamFilterContext* h264bsfc = <span class="literal">NULL</span>;</span><br><span class="line">result = <span class="built_in">avformat_open_input</span>(&amp;fmt_ctx, fileName, <span class="literal">NULL</span>, <span class="literal">NULL</span>);</span><br><span class="line">result = <span class="built_in">avformat_find_stream_info</span>(fmt_ctx, <span class="literal">NULL</span>);</span><br><span class="line"><span class="comment">//这里寻找到视频帧位置</span></span><br><span class="line">video_stream = <span class="built_in">av_find_best_stream</span>(fmt_ctx, AVMEDIA_TYPE_VIDEO, <span class="number">-1</span>, <span class="number">-1</span>,</span><br><span class="line">	<span class="literal">NULL</span>, <span class="number">0</span>);</span><br><span class="line"><span class="comment">//这里寻找到音频帧位置</span></span><br><span class="line">audio_stream = <span class="built_in">av_find_best_stream</span>(fmt_ctx, AVMEDIA_TYPE_AUDIO, <span class="number">-1</span>, <span class="number">-1</span>,</span><br><span class="line">	<span class="literal">NULL</span>, <span class="number">0</span>);</span><br><span class="line"><span class="comment">//这是mp4里面的视频转换成h264视频</span></span><br><span class="line">h264bsfc = <span class="built_in">av_bitstream_filter_init</span>(<span class="string">&quot;h264_mp4toannexb&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//打印出视频宽高</span></span><br><span class="line">AVCodecContext *origin_ctx = <span class="literal">NULL</span>;</span><br><span class="line">origin_ctx = fmt_ctx-&gt;streams[video_stream]-&gt;codec;</span><br><span class="line"><span class="built_in">log_d</span>(<span class="string">&quot;video_stream:%d&quot;</span>, video_stream);</span><br><span class="line"><span class="built_in">log_d</span>(<span class="string">&quot;height:%d&quot;</span>, origin_ctx-&gt;height);</span><br><span class="line"><span class="built_in">log_d</span>(<span class="string">&quot;width:%d&quot;</span>, origin_ctx-&gt;width);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/*** 读取帧 可以放在 StreamFileSource::doGetNextFrame() *****/</span></span><br><span class="line">AVPacket packet;</span><br><span class="line">AVCodecContext *origin_ctx = <span class="literal">NULL</span>;</span><br><span class="line"><span class="built_in">av_init_packet</span>(&amp;packet);</span><br><span class="line"><span class="keyword">while</span> (<span class="number">1</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> ((result = <span class="built_in">av_read_frame</span>(fmt_ctx, &amp;packet)) != <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="comment">//文件读取完成</span></span><br><span class="line">        <span class="built_in">handleClosure</span>(); <span class="comment">/**调用live555退出*/</span></span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    origin_ctx = fmt_ctx-&gt;streams[packet.stream_index]-&gt;codec;</span><br><span class="line">    <span class="keyword">if</span> (origin_ctx-&gt;codec_id == AV_CODEC_ID_H264) &#123;</span><br><span class="line">            <span class="keyword">if</span> (<span class="built_in">strstr</span>(ffileName, <span class="string">&quot;.mp4&quot;</span>)) &#123; <span class="comment">//MP4视频转换H264</span></span><br><span class="line">		    AVPacket new_pkt = packet;</span><br><span class="line"></span><br><span class="line">                    ret = <span class="built_in">av_bitstream_filter_filter</span>(obj-&gt;h264bsfc, origin_ctx,</span><br><span class="line">                                                     <span class="literal">NULL</span>,</span><br><span class="line">                                                     &amp;new_pkt.data, &amp;new_pkt.size,</span><br><span class="line">                                                     packet.data,</span><br><span class="line">                                                     packet.size,</span><br><span class="line">                                                     packet.flags &amp; AV_PKT_FLAG_KEY);</span><br><span class="line"></span><br><span class="line">                    <span class="built_in">av_packet_unref</span>(&amp;packet);</span><br><span class="line">                    packet.data = new_pkt.data;</span><br><span class="line">                    packet.size = new_pkt.size;</span><br><span class="line">        </span><br><span class="line">                    <span class="built_in">memcpy</span>(fTo, packet.data, packet.size); <span class="comment">//复制视频到fTo</span></span><br><span class="line">	            fFrameSize = packet.size; <span class="comment">//整个数据帧大小</span></span><br><span class="line">                    </span><br><span class="line">                    <span class="built_in">av_free</span>(packet.data);</span><br><span class="line">	    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="built_in">memcpy</span>(fTo, packet.data, packet.size); <span class="comment">//复制视频到fTo</span></span><br><span class="line">	        fFrameSize = packet.size; <span class="comment">//整个数据帧大小</span></span><br><span class="line">                <span class="built_in">av_packet_unref</span>(&amp;packet); <span class="comment">//must free the packet</span></span><br><span class="line">            &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">av_packet_unref</span>(&amp;packet); <span class="comment">//must free the packet</span></span><br><span class="line">&#125;</span><br><span class="line">fNumTruncatedBytes = fFrameSize;</span><br><span class="line"><span class="built_in">gettimeofday</span>(&amp;fPresentationTime, <span class="literal">NULL</span>);</span><br><span class="line">fDurationInMicroseconds = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">FramedSource::<span class="built_in">afterGetting</span>(<span class="keyword">this</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//关闭ffmpeg读取</span></span><br><span class="line"><span class="built_in">av_bitstream_filter_close</span>(h264bsfc);</span><br><span class="line"><span class="built_in">avformat_close_input</span>(&amp;fmt_ctx);</span><br></pre></td></tr></table></figure>
+
+<p>关于<code>FramedSource</code>类，用于读取数据帧 <code>virtual void doGetNextFrame() = 0;</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">unsigned</span> <span class="type">char</span>* fTo; <span class="comment">// in 输出帧数据保存位置</span></span><br><span class="line"><span class="type">unsigned</span> fMaxSize; <span class="comment">// in 输出帧最大值</span></span><br><span class="line"><span class="type">unsigned</span> fFrameSize; <span class="comment">// out 输出帧大小</span></span><br><span class="line"><span class="type">unsigned</span> fNumTruncatedBytes; <span class="comment">// out ????</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">timeval</span> <span class="title">fPresentationTime</span>;</span> <span class="comment">// out 时间</span></span><br><span class="line"><span class="type">unsigned</span> fDurationInMicroseconds; <span class="comment">// out 控制播放速度</span></span><br></pre></td></tr></table></figure>
+<p>当你的数据大于fTo的fMaxSize，就需要把剩下的数据帧缓存起来，下次在doGetNexFrame()时，先读取缓存数据到fTo</p>
+<p>当然Live555会出现数据过长错误.</p>
+<p>  参考 ：<a target="_blank" rel="noopener" href="https://blog.csdn.net/sunxiaopengsun/article/details/56834457">https://blog.csdn.net/sunxiaopengsun/article/details/56834457</a></p>
+<p>  需要修改</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">      <span class="function"><span class="keyword">virtual</span> <span class="type">unsigned</span> <span class="title">maxFrameSize</span><span class="params">()</span> <span class="type">const</span></span>;</span><br></pre></td></tr></table></figure>
+<p>  或者修改</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">     <span class="meta">#<span class="keyword">define</span> BANK_SIZE 150000</span></span><br></pre></td></tr></table></figure>
+
+<p><code>live/liveMedia/StreamParser.cpp</code></p>
+<p><code>ServerMediaSession *sms</code>添加到<code>RTSPServer</code>中，<code>Subsession</code>添加到<code>ServerMediaSession</code>中，这两个类添加后貌似就不会释放.</p>
+<p>但是通过<code>Subsession::createNewStreamSource()</code>出来的<code>FileSource</code>会被调用析构函数</p>
+<p>如：H264视频文件的<code>Subsession</code>返回的<code>FrameSource</code></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">FramedSource* <span class="title">H264VideoFileServerMediaSubsession::createNewStreamSource</span><span class="params">(<span class="type">unsigned</span> <span class="comment">/*clientSessionId*/</span>, <span class="type">unsigned</span>&amp; estBitrate)</span> </span>&#123;</span><br><span class="line">  estBitrate = <span class="number">500</span>; <span class="comment">// kbps, estimate</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// Create the video source:</span></span><br><span class="line">  ByteStreamFileSource* fileSource = ByteStreamFileSource::<span class="built_in">createNew</span>(<span class="built_in">envir</span>(), fFileName);</span><br><span class="line">  <span class="keyword">if</span> (fileSource == <span class="literal">NULL</span>) <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">  fFileSize = fileSource-&gt;<span class="built_in">fileSize</span>();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Create a framer for the Video Elementary Stream:</span></span><br><span class="line">  <span class="keyword">return</span> H264VideoStreamFramer::<span class="built_in">createNew</span>(<span class="built_in">envir</span>(), fileSource);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>这是别人的解释：<br>原文：live555学习-ByteStreamFileSource和H264VideoStreamFramer_zhangjikuan的博客-CSDN博客</li>
+</ul>
+<p><code>H264VideoStreamFramer</code>把自己的缓冲（其实是sink的）传给<code>H264VideoStreamParser</code>,每当<code>H264VideoStreamFramer</code>要获取一个NALU时，就跟H264VideoStreamParser要，<code>H264VideoStreamParser</code>就从<code>ByteStreamFileSource</code>读一坨数据，然后进行分析，如果取得了一个NALU，就传给H264VideoStreamFramer.</p>
+<h3 id="相关知识"><a href="#相关知识" class="headerlink" title="相关知识:"></a>相关知识:</h3><ul>
+<li><p>H264视频的NALU数据  mp4中读取到的AVPacket需要h264_mp4toannexb_filter得到sps及pps</p>
+</li>
+<li><p>RTP  传输视频数据 / RTCP 视频视屏质量 ——- RFC3550/RFC3551</p>
+</li>
+<li><p>RTSP 视频控制—–  RFC2326</p>
+</li>
+<li><p>RTP  数据协议负责对流媒体数据进行封包并实现媒体流的实时传输，每一个RTP数据报都由头部（Header）和负载（Payload）两个部分组成，其中头部前12个字节的含义是固定的，而负载则可以是音频或者视频数据。</p>
+</li>
+<li><p>CSRC记数\负载类型PT(编码算法、采样频率、承载通道等)\序列号\时间戳</p>
+</li>
+</ul>
+<p>GetNextFrame()调用栈</p>
+<p>关于numTruncatedBytes 到afterGettingFrame1中，则表示 fNumTruncatedBytes = fFrameSize-fMaxSize; 表示多余的数据量</p>
+<p>这是通过eclipse查看的类继承关系 Medium</p>
+<p>ServerMediaSubsession</p>
+<p>FramedSource</p>
+<p>关于怎么退出RTSPServer官方没有相关例子<br>我这里总结一个结果doEventLoop 的退出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">_runFlag=0;</span><br><span class="line">env-&gt;taskScheduler().doEventLoop(&amp;_runFlag); // does not return</span><br><span class="line">RTSPServer::close(rtspServer);</span><br><span class="line">if(env-&gt;reclaim())&#123;</span><br><span class="line">   qDebug()&lt;&lt;&quot;delete UsageEnvironment&quot;;</span><br><span class="line">&#125;</span><br><span class="line">delete scheduler;</span><br><span class="line">RTSPServer::close(...) //会删除 所有的MediaServersession, 在MediaServersession中会删除所有的Subsession</span><br><span class="line"></span><br><span class="line">env-&gt;reclaim()//会删除env;  delete this;</span><br><span class="line"></span><br><span class="line">schedule 直接delete就好, 重点注意析构函数，如果是private方式就要注意</span><br></pre></td></tr></table></figure>
+
+<h2 id="关于-RTP-AVP-TCP-和-RTP-AVP-UDP"><a href="#关于-RTP-AVP-TCP-和-RTP-AVP-UDP" class="headerlink" title="关于 RTP/AVP/TCP 和 RTP/AVP/UDP"></a>关于 RTP/AVP/TCP 和 RTP/AVP/UDP</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">RTSPServer::disableStreamingRTPOverTCP(); //禁止使用TCP方式进行rtp包发送</span><br><span class="line"></span><br><span class="line">Boolean RTPInterface::sendPacket(unsigned char* packet, unsigned packetSize);</span><br><span class="line">//</span><br><span class="line">RTPInterface::sendRTPorRTCPPacketOverTCP(....) </span><br><span class="line">修改live555发送缓冲大小</span><br><span class="line"></span><br><span class="line">void GenericMediaServer::incomingConnectionHandlerOnSocket(int serverSocket)</span><br><span class="line">修改  increaseSendBufferTo(envir(), clientSocket, 50*1024); 默认发送缓冲</span><br><span class="line"></span><br><span class="line">可以继承 public RTSPServer 修改：</span><br><span class="line"></span><br><span class="line">virtual ClientConnection *createNewClientConnection(int clientSocket, struct sockaddr_in clientAddr);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h2><p>live555使用整理_王log的博客-CSDN博客_live555使用  live555使用整理</p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/e80fd9959824">https://www.jianshu.com/p/e80fd9959824</a> live555 server tcp发送丢包问题调试</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/yuanchunsi/article/details/78679009">https://blog.csdn.net/yuanchunsi/article/details/78679009</a> live555 传输方式（TCP&amp;UDP）</p>
+<p>​</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/live555/" rel="tag"># live555</a>
+              <a href="/tags/c/" rel="tag"># c++</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/docs/2022/04/01/linux/api/open/" rel="prev" title="open">
+      <i class="fa fa-chevron-left"></i> open
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/docs/2022/04/08/hello-world/" rel="next" title="Hello World">
+      Hello World <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%88%91%E7%9A%84%E5%8E%9F%E6%96%87"><span class="nav-number">1.</span> <span class="nav-text">我的原文</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E6%BA%90%E7%A0%81%E4%B8%8B%E8%BD%BD"><span class="nav-number">2.</span> <span class="nav-text">1,源码下载</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E7%BC%96%E8%AF%91"><span class="nav-number">3.</span> <span class="nav-text">2,编译</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E7%BB%93%E6%9E%84%E5%9B%BE"><span class="nav-number">4.</span> <span class="nav-text">3 结构图</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86"><span class="nav-number">4.0.1.</span> <span class="nav-text">相关知识:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E-RTP-AVP-TCP-%E5%92%8C-RTP-AVP-UDP"><span class="nav-number">4.1.</span> <span class="nav-text">关于 RTP&#x2F;AVP&#x2F;TCP 和 RTP&#x2F;AVP&#x2F;UDP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%EF%BC%9A"><span class="nav-number">4.2.</span> <span class="nav-text">参考：</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">programcj</p>
+  <div class="site-description" itemprop="description">我的日志</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">programcj</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
